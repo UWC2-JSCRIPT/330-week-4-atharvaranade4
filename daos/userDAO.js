@@ -10,9 +10,15 @@ module.exports.createUser = async (userObj, userEmail) => {
     }
     const created = await User.create(userObj);
     return created;
-  }
+}
 
 module.exports.getUser = async (userEmail) => { 
     const user = await User.findOne({ email: userEmail }).lean(); //User.findOne() is model.function()
+    // console.log('user found')
     return user;
 }
+
+module.exports.updateUserPassword = async (userId, password) => { 
+    await User.updateOne({ _id: userId }, { password: password });
+    return true
+} 
