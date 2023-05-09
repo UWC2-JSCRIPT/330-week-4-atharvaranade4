@@ -25,7 +25,6 @@ router.use(async function (req, res, next){
 router.post("/", async (req, res, next) => {
     try{
         const createdNote = await NoteDAO.createNote(req.userId, req.body.text)
-        const savedNote = createdNote.text
         res.json(createdNote)
     } catch(e) {
         res.status(500).send(e.message);
@@ -37,7 +36,7 @@ router.get("/", async (req, res, next) => {
         if (!req.userId){
             res.status(401).send("no valid token")
         } else {
-            const getNote = await NoteDAO.getUserNote(req.userId)
+            const getNote = await NoteDAO.getUserNotes(req.userId)
             return res.json(getNote)
         }
     } catch(e) {
@@ -46,23 +45,21 @@ router.get("/", async (req, res, next) => {
 });
 
 router.get("/:id", async (req, res, next) => {
-    try{
-        if (!req.userId){
-            res.status(400).send("no token")
+    try {
+        if (!req.params.id){
+            res.status(400).send('invalid id')
         } else {
-            const getNoteById = await NoteDAO.getNote(req.userId, req.params.id)
-            console.log(getNoteById)
-            if (getNoteById.length === 0) {
-                res.status(404)
-            } else if (!getNoteById) {
-                res.sendStatus(400)
+            const noteId = req.params.id
+            const getNoteById = await NoteDAO.getNote(req.userId, noteId)
+            if (getNoteById == false) {
+                res.status(404).send('no valid note')
             } else {
                 return res.json(getNoteById[0])
             }
         }
     } catch(e) {
-        res.status(500).send(e.message);
-    }
+        next(e)
+    }    
 });
 
 

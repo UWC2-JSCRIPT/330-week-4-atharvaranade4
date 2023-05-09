@@ -13,7 +13,7 @@ module.exports.getNote = async (userId, noteId) => {
     return getnote;
 }
 
-module.exports.getUserNote = async (userId) => {
+module.exports.getUserNotes = async (userId) => {
     const userNote = await Note.find({ userId: userId }).lean();
     return userNote;
 }
