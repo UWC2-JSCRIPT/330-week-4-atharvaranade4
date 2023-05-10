@@ -48,7 +48,7 @@ router.post("/", async (req, res, next) => {
     }
 });
 
-// Mideleware
+// Middeleware
 router.use(async function (req, res, next){
     const userAuth = req.headers.authorization;
     if (!userAuth){
@@ -96,7 +96,5 @@ router.post("/logout", async (req, res, next) => {
         }
     }
 });
-
-
 
 module.exports = router;

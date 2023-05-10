@@ -62,5 +62,12 @@ router.get("/:id", async (req, res, next) => {
     }    
 });
 
+router.use(function (e, req, res, next){
+    if (e.message.includes("Cast to ObjectId failed")){
+        res.status(400).send('Invalid id provided');
+    } else {
+        res.status(500).send('Something broke!')
+    }
+});
 
 module.exports = router;
